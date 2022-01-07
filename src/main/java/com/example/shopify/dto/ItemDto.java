@@ -5,11 +5,14 @@ import com.example.shopify.model.Item;
 import javax.validation.constraints.NotNull;
 
 public class ItemDto {
-    private @NotNull Integer id;
-    private @NotNull String name;
+    private Integer id;
+    @NotNull(message = "Item name cannot be null.")
+    private String name;
     private String description;
-    private @NotNull double price;
-    private @NotNull Integer count;
+    @NotNull(message = "Item price cannot be null.")
+    private double price;
+    @NotNull(message = "Item number cannot be null.")
+    private Integer count;
 
 
     public Integer getId() {

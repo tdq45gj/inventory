@@ -4,6 +4,7 @@ import com.example.shopify.dto.ItemDto;
 import com.example.shopify.model.Item;
 import org.springframework.stereotype.Service;
 
+import java.io.Writer;
 import java.util.List;
 
 public interface ItemService {
@@ -12,4 +13,5 @@ public interface ItemService {
     public Item findItemById(Integer id);
     public void updateItem(Integer id, ItemDto itemDto);
     public void deleteItem(Integer id);
+    public void writeItemToCsv(Writer writer);
 }

@@ -4,12 +4,12 @@ import com.example.shopify.common.ApiReponse;
 import com.example.shopify.dto.ItemDto;
 import com.example.shopify.model.Item;
 import com.example.shopify.service.ItemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -33,7 +33,7 @@ public class ItemController {
     }
 
     @PostMapping("/delete/{itemId}")
-    public ResponseEntity<ApiReponse> getItemById(@PathVariable("itemId") Integer id) {
+    public ResponseEntity<ApiReponse> deleteItemById(@PathVariable("itemId") Integer id) {
         itemService.deleteItem(id);
         return new ResponseEntity<>(new ApiReponse(true, "An item has been deleted."), HttpStatus.ACCEPTED);
     }
@@ -45,7 +45,14 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public Item findItemById(@PathVariable("itemId") Integer id) {
-        return itemService.findItemById(id);
+    public ResponseEntity<Item> findItemById(@PathVariable("itemId") Integer id) {
+        return new ResponseEntity<>(itemService.findItemById(id), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/export")
+    public void exportItemsCSV(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=items.csv");
+        itemService.writeItemToCsv(response.getWriter());
     }
 }

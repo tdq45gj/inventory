@@ -1,23 +1,39 @@
 package com.example.shopify.model;
 
 import com.example.shopify.dto.ItemDto;
+import jdk.jfr.Label;
+import org.springframework.context.annotation.Description;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "items")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Label("Item Id")
     private Integer id;
 
-    @NotNull @Column(nullable = false)
+    @NotNull(message = "Item name cannot be null.")
+    @Column(nullable = false)
+    @Label("Name")
     private String name;
+
+    @Label("Description")
     private String description;
-    @NotNull @Column(nullable = false)
+
+    @NotNull(message = "Item price cannot be null.")
+    @Column(nullable = false)
+    @PositiveOrZero(message = "Price must be positive or zero.")
+    @Label("Unit Price")
     private double price;
-    @NotNull @Column(nullable = false)
+
+    @NotNull(message = "Item number cannot be null.")
+    @Column(nullable = false)
+    @PositiveOrZero(message = "Count must be positive or zero.")
+    @Label("Count")
     private Integer count;
 
     public Integer getId() {
