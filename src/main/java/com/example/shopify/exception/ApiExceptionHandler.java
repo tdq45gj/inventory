@@ -26,7 +26,7 @@ public class ApiExceptionHandler {
             sb.append(violation.getMessage());
             sb.append(" ");
         }
-        if (!sb.isEmpty()) {
+        if (sb.length() > 0) {
             sb.deleteCharAt(sb.length() - 1);
         }
         return new ResponseEntity<>(new ApiReponse(false, sb.toString()), HttpStatus.BAD_REQUEST);
