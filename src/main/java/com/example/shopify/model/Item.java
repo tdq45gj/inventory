@@ -12,10 +12,13 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private @NotNull String name;
+    @NotNull @Column(nullable = false)
+    private String name;
     private String description;
-    private @NotNull double price;
-    private @NotNull Integer count;
+    @NotNull @Column(nullable = false)
+    private double price;
+    @NotNull @Column(nullable = false)
+    private Integer count;
 
     public Integer getId() {
         return id;

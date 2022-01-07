@@ -30,16 +30,18 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item findItemById(Integer id) {
-        return null;
+        return itemRepository.getById(id);
     }
 
     @Override
     public void updateItem(Integer id, ItemDto itemDto) {
-
+        Item item = new Item(itemDto);
+        item.setId(id);
+        itemRepository.save(item);
     }
 
     @Override
     public void deleteItem(Integer id) {
-
+        itemRepository.deleteById(id);
     }
 }
