@@ -73,9 +73,9 @@ public class ItemServiceImpl implements ItemService {
         List<Item> items = listItems();
         try {
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
-            csvPrinter.printRecord("Item Id", "Name", "Description", "Count", "Price");
+            csvPrinter.printRecord("Item Id", "Name", "Description", "Price", "Count");
             for (Item item : items) {
-                csvPrinter.printRecord(item.getId(), item.getName(), item.getDescription(), item.getCount(), item.getPrice());
+                csvPrinter.printRecord(item.getId(), item.getName(), item.getDescription(), item.getPrice(), item.getCount());
             }
         } catch (IOException e) {
             e.printStackTrace();
