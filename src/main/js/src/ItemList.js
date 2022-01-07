@@ -38,6 +38,23 @@ class ItemList extends Component {
         });
     }
 
+    async export() {
+        fetch(`/api/item/export`)
+            .then((res) => {
+                return res.blob();
+            })
+            .then((blob) => {
+                const href = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = href;
+                link.setAttribute('download', 'items.csv');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            })
+    }
+
+
     render() {
         const {items} = this.state;
 
@@ -63,6 +80,9 @@ class ItemList extends Component {
                 <Container fluid>
                     <div className="float-right">
                         <Button color="success" tag={Link} to="/item/new">Add Item</Button>
+                    </div>
+                    <div className="float-right">
+                        <Button color="info" onClick={() => this.export()}>Export CSV</Button>
                     </div>
                     <h3>Items</h3>
                     <Table className="mt-4">
