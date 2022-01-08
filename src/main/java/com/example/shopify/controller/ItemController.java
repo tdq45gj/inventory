@@ -57,8 +57,4 @@ public class ItemController {
         itemService.writeItemToCsv(response.getWriter());
     }
 
-    @GetMapping("/v") @CrossOrigin
-    public @NotNull ResponseEntity<Integer> v() {
-        return new ResponseEntity<>(1, HttpStatus.ACCEPTED);
-    }
 }
