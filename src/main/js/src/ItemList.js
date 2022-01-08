@@ -4,15 +4,16 @@ import AppNavbar from './AppNavbar';
 import { Link } from 'react-router-dom';
 
 class ItemList extends Component {
-
-    constructor(props) {
+        constructor(props) {
         super(props);
         this.state = {items: []};
         this.remove = this.remove.bind(this);
     }
 
     componentDidMount() {
-        fetch('/api/item/')
+        console.log(process.env.REACT_APP_API_BASE_URL)
+
+        fetch(process.env.REACT_APP_API_BASE_URL + '/api/item/')
             .then(response => response.json())
             .then(
                 (data) => {
@@ -26,7 +27,7 @@ class ItemList extends Component {
     }
 
     async remove(id) {
-        await fetch(`/api/item/delete/${id}`, {
+        await fetch(process.env.REACT_APP_API_BASE_URL + `/api/item/delete/${id}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -39,7 +40,7 @@ class ItemList extends Component {
     }
 
     async export() {
-        fetch(`/api/item/export`)
+        fetch(process.env.REACT_APP_API_BASE_URL +`/api/item/export`)
             .then((res) => {
                 return res.blob();
             })
