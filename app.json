@@ -1,4 +1,5 @@
 {
+  "stack": "container",
   "name": "Shopify Challenge",
   "description": "This app supports CRUD operations with the additional CSV export function.",
   "repository": "https://github.com/tdq45gj/inventory",
@@ -6,6 +7,5 @@
   },
   "env": {
     "REACT_APP_API_BASE_URL": "http://localhost:8080"
-  },
-  "stack": "container"
+  }
 }
