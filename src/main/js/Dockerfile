@@ -1,41 +1,25 @@
-#### Stage 1: Build the react application
-FROM node:12.22.8-alpine as build
+FROM node:14.1-alpine AS builder
 
-# Configure the main working directory inside the docker image.
-# This is the base directory used in any further RUN, COPY, and ENTRYPOINT
-# commands.
-WORKDIR /app
-
-COPY ["package.json", "package-lock.json*", "./"]
-
-# Copy the package.json as well as the package-lock.json and install
-# the dependencies. This is a separate step so the dependencies
-# will be cached unless changes to one of those two files
-# are made.
-#COPY package.json ./
+WORKDIR /opt/web
+COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the main application
-COPY . ./
+ENV PATH="./node_modules/.bin:$PATH"
 
+COPY . ./
 # Arguments
 ARG REACT_APP_API_BASE_URL
 ENV REACT_APP_API_BASE_URL=${REACT_APP_API_BASE_URL}
 
-# Build the application
 RUN npm run build
 
-#### Stage 2: Serve the React application from Nginx
-FROM nginx:1.17.0-alpine
-
-# Copy the react build from Stage 1
-COPY --from=build /app/build /var/www
-
-# Copy our custom nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port 80 to the Docker host, so we can access it
-# from the outside.
+FROM nginx:1.17-alpine
+RUN apk --no-cache add curl
+RUN curl -L https://github.com/a8m/envsubst/releases/download/v1.1.0/envsubst-`uname -s`-`uname -m` -o envsubst && \
+    chmod +x envsubst && \
+    mv envsubst /usr/local/bin
+COPY ./nginx.config /etc/nginx/nginx.template
 EXPOSE 80
 
-ENTRYPOINT ["nginx","-g","daemon off;"]
+CMD ["/bin/sh", "-c", "envsubst < /etc/nginx/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+COPY --from=builder /opt/web/build /usr/share/nginx/html
