@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/item")
 public class ItemController {
     private final ItemService itemService;
@@ -21,38 +22,39 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/") @CrossOrigin
     public @NotNull List<Item> list() {
         return itemService.listItems();
     }
 
-    @PostMapping("/add")
+    @PostMapping("/add") @CrossOrigin
     public ResponseEntity<ApiReponse> addItem(@RequestBody ItemDto itemDto) {
         itemService.addItem(itemDto);
         return new ResponseEntity<>(new ApiReponse(true, "A new item has been added."), HttpStatus.CREATED);
     }
 
-    @PostMapping("/delete/{itemId}")
+    @PostMapping("/delete/{itemId}") @CrossOrigin
     public ResponseEntity<ApiReponse> deleteItemById(@PathVariable("itemId") Integer id) {
         itemService.deleteItem(id);
         return new ResponseEntity<>(new ApiReponse(true, "An item has been deleted."), HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/update/{itemId}")
+    @PostMapping("/update/{itemId}") @CrossOrigin
     public ResponseEntity<ApiReponse> updateItemById(@PathVariable("itemId") Integer id, @RequestBody ItemDto itemDto) {
         itemService.updateItem(id, itemDto);
         return new ResponseEntity<>(new ApiReponse(true, "An item has been updated."), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/{itemId}")
+    @GetMapping("/{itemId}") @CrossOrigin
     public ResponseEntity<Item> findItemById(@PathVariable("itemId") Integer id) {
         return new ResponseEntity<>(itemService.findItemById(id), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/export")
+    @GetMapping("/export") @CrossOrigin
     public void exportItemsCSV(HttpServletResponse response) throws IOException {
         response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=items.csv");
         itemService.writeItemToCsv(response.getWriter());
     }
+
 }

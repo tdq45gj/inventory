@@ -24,7 +24,8 @@ class ItemEdit extends Component {
 
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const item = await (await fetch(`/api/item/${this.props.match.params.id}`)).json();
+            console.log(process.env.REACT_APP_API_BASE_URL)
+            const item = await (await fetch(process.env.REACT_APP_API_BASE_URL + `/api/item/${this.props.match.params.id}`)).json();
             this.setState({item: item});
         }
     }
@@ -42,7 +43,7 @@ class ItemEdit extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('/api/item/' + (item.id ? 'update/' + (item.id) : 'add'), {
+        await fetch(process.env.REACT_APP_API_BASE_URL + '/api/item/' + (item.id ? 'update/' + (item.id) : 'add'), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

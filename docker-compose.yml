@@ -1,6 +1,6 @@
 # Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
 
-version: '3.9'
+version: '3.7'
 
 # Define services
 services:
@@ -26,7 +26,7 @@ services:
       context: src/main/js # Use an image built from the specified dockerfile in the `polling-app-client` directory.
       dockerfile: Dockerfile
       args:
-        REACT_APP_API_BASE_URL: http://127.0.0.1:8080/
+        REACT_APP_API_BASE_URL: http://localhost:8080
     ports:
       - "3000:80" # Map the exposed port 80 on the container to port 9090 on the host machine
     restart: always
@@ -34,6 +34,7 @@ services:
       - app-server
     networks:
       - frontend
+
 
 # Networks to be created to facilitate communication between containers
 networks:

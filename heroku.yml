@@ -1,0 +1,11 @@
+
+build:
+  docker:
+    app-server: Dockerfile
+    web: src/main/js/Dockerfile
+  config:
+    REACT_APP_API_BASE_URL: http://localhost:8080
+release:
+  image: web
+run:
+  web: npm start
