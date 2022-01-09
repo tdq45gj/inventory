@@ -27,8 +27,8 @@ services:
       dockerfile: Dockerfile
       args:
         REACT_APP_API_BASE_URL: http://localhost:8080
-    # ports:
-    #   - "3000:80" # Map the exposed port 80 on the container to port 9090 on the host machine
+    ports:
+      - "3000:80" # Map the exposed port 80 on the container to port 9090 on the host machine
     restart: always
     depends_on:
       - app-server
